@@ -1,4 +1,4 @@
-export declare type Dict = {
+export type Dict = {
     [key: string]: any;
 };
 export declare function isBoolean(val: any): val is boolean;
@@ -41,7 +41,7 @@ export declare function pick(obj: Dict, ...args: any[]): Dict;
 export declare function omit(obj: Dict, ...args: any[]): Dict;
 export declare function isTrue(val: any): boolean;
 export declare function isFalse(val: any): boolean;
-export declare type AsFloatOpts = {
+export type AsFloatOpts = {
     def?: number;
     commaAsDecimal?: boolean;
 };
@@ -78,7 +78,7 @@ export declare function pad(n: number, width: number, z?: string): string;
  * @return {number} num rounded
  */
 export declare function roundNumber(num: number, dec?: number): number;
-export declare type DeepCopyOpts = {
+export type DeepCopyOpts = {
     replace?: Dict;
     detectRegExp?: boolean;
 };
@@ -127,7 +127,7 @@ export declare function util(): Util;
 export interface IUtilSource {
     toString(): string;
 }
-export declare type UtilOpts = {
+export type UtilOpts = {
     throw?: boolean;
     src?: string | IUtilSource;
 };
