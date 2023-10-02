@@ -18,6 +18,7 @@ export declare function isPosNumber(val: any): val is number;
 export declare function isNonEmptyString(val: any): val is string;
 export declare function isFunction(val: any): boolean;
 export declare function isDate(val: any): val is Date;
+export declare function isValidDate(val: any): val is Date;
 export declare function isArray(val: any): val is any[];
 export declare function isNonEmptyArray(val: any): val is any[];
 export declare function isRegExp(val: any): val is RegExp;
@@ -111,6 +112,12 @@ export declare function isClass(obj: any, name: string): boolean;
  */
 export declare function camelToDash(str: string): string;
 /**
+ * Convert 'this_string_here' to 'This String Here'.
+ * @param str
+ * @returns
+ */
+export declare function underscoreCapitalize(str: string): string;
+/**
  * Verify that val is any one of the basic types.
  * @param val - The value to be tested
  * @param types
@@ -158,6 +165,7 @@ export declare class Util {
     isNonEmptyString(): boolean;
     isFunction(): boolean;
     isDate(): boolean;
+    isValidDate(): boolean;
     isArray(): boolean;
     isNonEmptyArray(): boolean;
     isRegExp(): boolean;

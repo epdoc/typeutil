@@ -1,15 +1,17 @@
 export type Dict = { [key: string]: any };
 
 const REGEX = {
-  isTrue: /^true$/i,
-  isFalse: /^false$/i,
-  customElement: /CustomElement$/,
-  firstUppercase: /(^[A-Z])/,
-  allUppercase: /([A-Z])/g,
-  tr: /^\[tr\](.+)$/,
-  html: /[&<>"'\/]/g,
-  instr: /^\[([^\]]+)\](.*)$/,
-  typeSplit: /\s*[,\|]{1}\s*/
+  isTrue: new RegExp(/^true$/, 'i'),
+  isFalse: new RegExp(/^false$/, 'i'),
+  customElement: new RegExp(/CustomElement$/),
+  firstUppercase: new RegExp(/(^[A-Z])/),
+  allUppercase: new RegExp(/([A-Z])/, 'g'),
+  firstCapitalize: new RegExp(/^([a-z])/),
+  allCapitalize: new RegExp(/(\_[a-z])/, 'gi'),
+  tr: new RegExp(/^\[tr\](.+)$/),
+  html: new RegExp(/[&<>"'\/]/, 'g'),
+  instr: new RegExp(/^\[([^\]]+)\](.*)$/),
+  typeSplit: new RegExp(/\s*[,\|]{1}\s*/)
 };
 
 export function isBoolean(val: any): val is boolean {
@@ -54,6 +56,10 @@ export function isFunction(val: any) {
 
 export function isDate(val: any): val is Date {
   return val instanceof Date;
+}
+
+export function isValidDate(val: any): val is Date {
+  return val instanceof Date && !isNaN(val.getTime());
 }
 
 export function isArray(val: any): val is any[] {
@@ -418,6 +424,21 @@ export function camelToDash(str: string): string {
 }
 
 /**
+ * Convert 'this_string_here' to 'This String Here'.
+ * @param str
+ * @returns
+ */
+export function underscoreCapitalize(str: string): string {
+  return str
+    .replace(REGEX.firstCapitalize, function($1) {
+      return $1.toUpperCase();
+    })
+    .replace(REGEX.allCapitalize, function($1) {
+      return $1.toUpperCase().replace('_', ' ');
+    });
+}
+
+/**
  * Verify that val is any one of the basic types.
  * @param val - The value to be tested
  * @param types
@@ -605,6 +626,10 @@ export class Util {
 
   isDate() {
     return isDate(this.value());
+  }
+
+  isValidDate() {
+    return isValidDate(this.value());
   }
 
   isArray() {

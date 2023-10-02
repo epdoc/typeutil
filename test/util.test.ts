@@ -20,10 +20,12 @@ import {
   isRegExp,
   isString,
   isType,
+  isValidDate,
   omit,
   pad,
   pick,
-  utilObj as t
+  utilObj as t,
+  underscoreCapitalize
 } from '../dist';
 
 describe('util', () => {
@@ -150,6 +152,16 @@ describe('util', () => {
       expect(isDate(233433)).toBe(false);
       expect(isDate(new Date())).toBe(true);
       expect(isDate(() => {})).toBe(false);
+    });
+
+    it('isValidDate', () => {
+      expect(isValidDate(/^.*$/)).toBe(false);
+      expect(isValidDate({})).toBe(false);
+      expect(isValidDate(false)).toBe(false);
+      expect(isValidDate(233433)).toBe(false);
+      expect(isValidDate(new Date())).toBe(true);
+      expect(isValidDate(new Date('//'))).toBe(false);
+      expect(isValidDate(() => {})).toBe(false);
     });
 
     it('isError', () => {
@@ -319,6 +331,10 @@ describe('util', () => {
     it('camelToDash', () => {
       expect(camelToDash('myStringHere')).toEqual('my-string-here');
       expect(camelToDash('MyStringHere')).toEqual('my-string-here');
+    });
+    it('underscoreCapitalize', () => {
+      expect(underscoreCapitalize('my_string_here')).toEqual('My String Here');
+      expect(underscoreCapitalize('anOTHer_String')).toEqual('AnOTHer String');
     });
     it('pad', () => {
       expect(pad(32, 4)).toEqual('0032');

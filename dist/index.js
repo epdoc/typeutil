@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Util = exports.utilObj = exports.util = exports.isType = exports.camelToDash = exports.isClass = exports.asError = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
+exports.Util = exports.utilObj = exports.util = exports.isType = exports.underscoreCapitalize = exports.camelToDash = exports.isClass = exports.asError = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isValidDate = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
 const REGEX = {
-    isTrue: /^true$/i,
-    isFalse: /^false$/i,
-    customElement: /CustomElement$/,
-    firstUppercase: /(^[A-Z])/,
-    allUppercase: /([A-Z])/g,
-    tr: /^\[tr\](.+)$/,
-    html: /[&<>"'\/]/g,
-    instr: /^\[([^\]]+)\](.*)$/,
-    typeSplit: /\s*[,\|]{1}\s*/
+    isTrue: new RegExp(/^true$/, 'i'),
+    isFalse: new RegExp(/^false$/, 'i'),
+    customElement: new RegExp(/CustomElement$/),
+    firstUppercase: new RegExp(/(^[A-Z])/),
+    allUppercase: new RegExp(/([A-Z])/, 'g'),
+    firstCapitalize: new RegExp(/^([a-z])/),
+    allCapitalize: new RegExp(/(\_[a-z])/, 'gi'),
+    tr: new RegExp(/^\[tr\](.+)$/),
+    html: new RegExp(/[&<>"'\/]/, 'g'),
+    instr: new RegExp(/^\[([^\]]+)\](.*)$/),
+    typeSplit: new RegExp(/\s*[,\|]{1}\s*/)
 };
 function isBoolean(val) {
     return typeof val === 'boolean';
@@ -56,6 +58,10 @@ function isDate(val) {
     return val instanceof Date;
 }
 exports.isDate = isDate;
+function isValidDate(val) {
+    return val instanceof Date && !isNaN(val.getTime());
+}
+exports.isValidDate = isValidDate;
 function isArray(val) {
     return Array.isArray(val);
 }
@@ -424,6 +430,21 @@ function camelToDash(str) {
 }
 exports.camelToDash = camelToDash;
 /**
+ * Convert 'this_string_here' to 'This String Here'.
+ * @param str
+ * @returns
+ */
+function underscoreCapitalize(str) {
+    return str
+        .replace(REGEX.firstCapitalize, function ($1) {
+        return $1.toUpperCase();
+    })
+        .replace(REGEX.allCapitalize, function ($1) {
+        return $1.toUpperCase().replace('_', ' ');
+    });
+}
+exports.underscoreCapitalize = underscoreCapitalize;
+/**
  * Verify that val is any one of the basic types.
  * @param val - The value to be tested
  * @param types
@@ -579,6 +600,9 @@ class Util {
     }
     isDate() {
         return isDate(this.value());
+    }
+    isValidDate() {
+        return isValidDate(this.value());
     }
     isArray() {
         return isArray(this.value());
