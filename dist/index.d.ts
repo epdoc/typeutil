@@ -100,6 +100,7 @@ export declare function deepCopy(a: any, opts?: DeepCopyOpts): any;
  */
 export declare function deepEquals(a: any, b: any): boolean;
 export declare function asError(...args: any[]): Error;
+export declare function delayPromise(ms: number): Promise<void>;
 /**
  * Careful using this method on minimized code where the name of the class might be changed
  * @param obj

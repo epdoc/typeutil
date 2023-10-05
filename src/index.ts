@@ -11,7 +11,7 @@ const REGEX = {
   tr: new RegExp(/^\[tr\](.+)$/),
   html: new RegExp(/[&<>"'\/]/, 'g'),
   instr: new RegExp(/^\[([^\]]+)\](.*)$/),
-  typeSplit: new RegExp(/\s*[,\|]{1}\s*/)
+  typeSplit: new RegExp(/\s*[,\|]{1}\s*/),
 };
 
 export function isBoolean(val: any): val is boolean {
@@ -124,7 +124,7 @@ export function pick(obj: Dict, ...args: any[]) {
   if (Array.isArray(args[0])) {
     args = args[0];
   }
-  args.forEach(key => {
+  args.forEach((key) => {
     if (obj[key] !== undefined) {
       result[key] = obj[key];
     }
@@ -136,9 +136,9 @@ export function omit(obj: Dict, ...args: any[]) {
   if (Array.isArray(args[0])) {
     args = args[0];
   }
-  const keys = Object.keys(obj).filter(key => args.indexOf(key) < 0);
+  const keys = Object.keys(obj).filter((key) => args.indexOf(key) < 0);
   const newObj: Dict = {};
-  keys.forEach(k => {
+  keys.forEach((k) => {
     newObj[k] = obj[k];
   });
   return newObj;
@@ -286,7 +286,7 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
   } else if (typeof a === 'string') {
     if (opts && opts.replace) {
       let r = a;
-      Object.keys(opts.replace).forEach(b => {
+      Object.keys(opts.replace).forEach((b) => {
         const m: string = '{' + b + '}';
         if (r.includes(m)) {
           r = r.replace(m, opts.replace[b]);
@@ -311,7 +311,7 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
       return re;
     } else {
       const result2: Dict = {};
-      Object.keys(a).forEach(key => {
+      Object.keys(a).forEach((key) => {
         result2[key] = deepCopy(a[key], opts);
       });
       return result2;
@@ -356,7 +356,7 @@ export function deepEquals(a: any, b: any): boolean {
   const ka = Object.keys(a);
   const kb = Object.keys(b);
   if (kb.length === ka.length) {
-    return ka.every(k => {
+    return ka.every((k) => {
       return deepEquals(a[k], b[k]);
     });
   }
@@ -383,7 +383,7 @@ export function asError(...args: any[]): Error {
   let err: Error | undefined;
   const msg: string[] = [];
   if (args.length) {
-    args.forEach(arg => {
+    args.forEach((arg) => {
       if (arg instanceof Error) {
         if (!err) {
           err = arg;
@@ -402,6 +402,14 @@ export function asError(...args: any[]): Error {
     }
   }
   return err as Error;
+}
+
+export function delayPromise(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(function () {
+      resolve();
+    }, ms);
+  });
 }
 
 /**
@@ -430,10 +438,10 @@ export function camelToDash(str: string): string {
  */
 export function underscoreCapitalize(str: string): string {
   return str
-    .replace(REGEX.firstCapitalize, function($1) {
+    .replace(REGEX.firstCapitalize, function ($1) {
       return $1.toUpperCase();
     })
-    .replace(REGEX.allCapitalize, function($1) {
+    .replace(REGEX.allCapitalize, function ($1) {
       return $1.toUpperCase().replace('_', ' ');
     });
 }
@@ -534,7 +542,7 @@ export class Util {
 
   protected _resolvePath(...path: (string | string[])[]): string[] {
     let a: string[] = [];
-    path.forEach(arg => {
+    path.forEach((arg) => {
       if (isString(arg)) {
         arg = arg.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
         arg = arg.replace(/^\./, ''); // strip a leading dot

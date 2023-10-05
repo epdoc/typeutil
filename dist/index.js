@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Util = exports.utilObj = exports.util = exports.isType = exports.underscoreCapitalize = exports.camelToDash = exports.isClass = exports.asError = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isValidDate = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
+exports.Util = exports.utilObj = exports.util = exports.isType = exports.underscoreCapitalize = exports.camelToDash = exports.isClass = exports.delayPromise = exports.asError = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isValidDate = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
 const REGEX = {
     isTrue: new RegExp(/^true$/, 'i'),
     isFalse: new RegExp(/^false$/, 'i'),
@@ -12,7 +12,7 @@ const REGEX = {
     tr: new RegExp(/^\[tr\](.+)$/),
     html: new RegExp(/[&<>"'\/]/, 'g'),
     instr: new RegExp(/^\[([^\]]+)\](.*)$/),
-    typeSplit: new RegExp(/\s*[,\|]{1}\s*/)
+    typeSplit: new RegExp(/\s*[,\|]{1}\s*/),
 };
 function isBoolean(val) {
     return typeof val === 'boolean';
@@ -123,7 +123,7 @@ function pick(obj, ...args) {
     if (Array.isArray(args[0])) {
         args = args[0];
     }
-    args.forEach(key => {
+    args.forEach((key) => {
         if (obj[key] !== undefined) {
             result[key] = obj[key];
         }
@@ -135,9 +135,9 @@ function omit(obj, ...args) {
     if (Array.isArray(args[0])) {
         args = args[0];
     }
-    const keys = Object.keys(obj).filter(key => args.indexOf(key) < 0);
+    const keys = Object.keys(obj).filter((key) => args.indexOf(key) < 0);
     const newObj = {};
-    keys.forEach(k => {
+    keys.forEach((k) => {
         newObj[k] = obj[k];
     });
     return newObj;
@@ -285,7 +285,7 @@ function deepCopy(a, opts) {
     else if (typeof a === 'string') {
         if (opts && opts.replace) {
             let r = a;
-            Object.keys(opts.replace).forEach(b => {
+            Object.keys(opts.replace).forEach((b) => {
                 const m = '{' + b + '}';
                 if (r.includes(m)) {
                     r = r.replace(m, opts.replace[b]);
@@ -315,7 +315,7 @@ function deepCopy(a, opts) {
         }
         else {
             const result2 = {};
-            Object.keys(a).forEach(key => {
+            Object.keys(a).forEach((key) => {
                 result2[key] = deepCopy(a[key], opts);
             });
             return result2;
@@ -360,7 +360,7 @@ function deepEquals(a, b) {
     const ka = Object.keys(a);
     const kb = Object.keys(b);
     if (kb.length === ka.length) {
-        return ka.every(k => {
+        return ka.every((k) => {
             return deepEquals(a[k], b[k]);
         });
     }
@@ -386,7 +386,7 @@ function asError(...args) {
     let err;
     const msg = [];
     if (args.length) {
-        args.forEach(arg => {
+        args.forEach((arg) => {
             if (arg instanceof Error) {
                 if (!err) {
                     err = arg;
@@ -410,6 +410,14 @@ function asError(...args) {
     return err;
 }
 exports.asError = asError;
+function delayPromise(ms) {
+    return new Promise((resolve) => {
+        setTimeout(function () {
+            resolve();
+        }, ms);
+    });
+}
+exports.delayPromise = delayPromise;
 /**
  * Careful using this method on minimized code where the name of the class might be changed
  * @param obj
@@ -521,7 +529,7 @@ class Util {
     }
     _resolvePath(...path) {
         let a = [];
-        path.forEach(arg => {
+        path.forEach((arg) => {
             if (isString(arg)) {
                 arg = arg.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
                 arg = arg.replace(/^\./, ''); // strip a leading dot
