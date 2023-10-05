@@ -1,6 +1,6 @@
 {
   "name": "epdoc-util",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Typescript-aware guard tests and other standalone utilities",
   "private": false,
   "keywords": [
@@ -14,7 +14,6 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jpravetz/epdoc-util.git"
