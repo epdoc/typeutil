@@ -4,19 +4,20 @@ export type Dict = {
 export declare function isBoolean(val: any): val is boolean;
 export declare function isString(val: any): val is string;
 export declare function isNumber(val: any): val is number;
-export declare function isInteger(val: any): val is number;
+export type Integer = number;
+export declare function isInteger(val: any): val is Integer;
 /**
  * Is 1, 2, 3, ...
  * @param val
  */
-export declare function isPosInteger(val: any): val is number;
+export declare function isPosInteger(val: any): val is Integer;
 /**
  * Is > 0
  * @param val
  */
 export declare function isPosNumber(val: any): val is number;
 export declare function isNonEmptyString(val: any): val is string;
-export declare function isFunction(val: any): boolean;
+export declare function isFunction(val: any): val is Function;
 export declare function isDate(val: any): val is Date;
 export declare function isValidDate(val: any): val is Date;
 export declare function isArray(val: any): val is any[];
@@ -99,6 +100,8 @@ export declare function deepCopy(a: any, opts?: DeepCopyOpts): any;
  * @returns {boolean}
  */
 export declare function deepEquals(a: any, b: any): boolean;
+export type CompareResult = -1 | 0 | 1;
+export declare function compareDictValue(a: Dict, b: Dict, key: string): CompareResult;
 export declare function asError(...args: any[]): Error;
 export declare function delayPromise(ms: number): Promise<void>;
 /**

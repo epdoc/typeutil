@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Util = exports.utilObj = exports.util = exports.isType = exports.underscoreCapitalize = exports.camelToDash = exports.isClass = exports.delayPromise = exports.asError = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isValidDate = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
+exports.Util = exports.utilObj = exports.util = exports.isType = exports.underscoreCapitalize = exports.camelToDash = exports.isClass = exports.delayPromise = exports.asError = exports.compareDictValue = exports.deepEquals = exports.deepCopy = exports.roundNumber = exports.pad = exports.asRegExp = exports.asInt = exports.asFloat = exports.isFalse = exports.isTrue = exports.omit = exports.pick = exports.isObject = exports.isError = exports.isEmpty = exports.hasValue = exports.isDict = exports.isDefined = exports.isNull = exports.isRegExp = exports.isNonEmptyArray = exports.isArray = exports.isValidDate = exports.isDate = exports.isFunction = exports.isNonEmptyString = exports.isPosNumber = exports.isPosInteger = exports.isInteger = exports.isNumber = exports.isString = exports.isBoolean = void 0;
 const REGEX = {
     isTrue: new RegExp(/^true$/, 'i'),
     isFalse: new RegExp(/^false$/, 'i'),
@@ -367,6 +367,16 @@ function deepEquals(a, b) {
     return false;
 }
 exports.deepEquals = deepEquals;
+function compareDictValue(a, b, key) {
+    if (a[key] < b[key]) {
+        return -1;
+    }
+    if (a[key] > b[key]) {
+        return 1;
+    }
+    return 0;
+}
+exports.compareDictValue = compareDictValue;
 function _isSet(a) {
     if (a === null || a === undefined) {
         return false;

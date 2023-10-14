@@ -26,7 +26,8 @@ export function isNumber(val: any): val is number {
   return typeof val === 'number' && !isNaN(val);
 }
 
-export function isInteger(val: any): val is number {
+export type Integer = number;
+export function isInteger(val: any): val is Integer {
   return isNumber(val) && Number.isInteger(val);
 }
 
@@ -34,7 +35,7 @@ export function isInteger(val: any): val is number {
  * Is 1, 2, 3, ...
  * @param val
  */
-export function isPosInteger(val: any): val is number {
+export function isPosInteger(val: any): val is Integer {
   return isInteger(val) && val > 0;
 }
 
@@ -50,7 +51,7 @@ export function isNonEmptyString(val: any): val is string {
   return typeof val === 'string' && val.length > 0;
 }
 
-export function isFunction(val: any) {
+export function isFunction(val: any): val is Function {
   return typeof val === 'function';
 }
 
@@ -361,6 +362,17 @@ export function deepEquals(a: any, b: any): boolean {
     });
   }
   return false;
+}
+
+export type CompareResult = -1 | 0 | 1;
+export function compareDictValue(a: Dict, b: Dict, key: string): CompareResult {
+  if (a[key] < b[key]) {
+    return -1;
+  }
+  if (a[key] > b[key]) {
+    return 1;
+  }
+  return 0;
 }
 
 function _isSet(a: any): boolean {
