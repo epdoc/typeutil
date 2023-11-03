@@ -229,7 +229,7 @@ export function asInt(val: any): number {
  * otherwise.
  * @param val
  */
-export function asRegExp(val: any): RegExp {
+export function asRegExp(val: any): RegExp | undefined {
   if (isRegExp(val)) {
     return val;
   } else if (isDict(val) && isString(val.pattern)) {
@@ -290,6 +290,7 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
       Object.keys(opts.replace).forEach((b) => {
         const m: string = '{' + b + '}';
         if (r.includes(m)) {
+          // @ts-ignore
           r = r.replace(m, opts.replace[b]);
         }
       });
@@ -307,6 +308,7 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
     }
     return result;
   } else if (isObject(a)) {
+    // @ts-ignore
     const re: RegExp = opts && opts.detectRegExp ? asRegExp(a) : undefined;
     if (re) {
       return re;
@@ -439,8 +441,8 @@ export function isClass(obj: any, name: string): boolean {
  */
 export function camelToDash(str: string): string {
   return str
-    .replace(REGEX.firstUppercase, ([first]) => first.toLowerCase())
-    .replace(REGEX.allUppercase, ([letter]) => `-${letter.toLowerCase()}`);
+    .replace(REGEX.firstUppercase, ([first]) => (first ? first.toLowerCase() : ''))
+    .replace(REGEX.allUppercase, ([letter]) => `-${letter ? letter.toLowerCase() : ''}`);
 }
 
 /**
@@ -511,6 +513,7 @@ export class Util {
   }
 
   property(...path: string[]): this {
+    this._path = this._path ? this._path : [];
     this._path = this._path.concat(this._resolvePath(...path));
     return this;
   }
@@ -536,10 +539,11 @@ export class Util {
 
   value(): any {
     let val = this._val;
+    this._path = this._path ? this._path : [];
     if (this._path.length) {
       for (let i = 0, n = this._path.length; i < n; ++i) {
         const k = this._path[i];
-        if (val && k in val) {
+        if (val && k && k in val) {
           val = val[k];
         } else {
           if (this._throw) {
@@ -573,13 +577,12 @@ export class Util {
   }
 
   setValue(object: Dict, value: any): this {
-    let a: any[] = [];
     if (this._path && this._path.length && isDict(object)) {
       let obj = object;
       const n = this._path.length;
       for (let i = 0; i < n; ++i) {
         const k = this._path[i];
-        if (obj) {
+        if (obj && k) {
           if (i >= n - 1) {
             if (isDict(obj)) {
               obj[k] = value;
@@ -690,7 +693,7 @@ export class Util {
 
   isType(...types: (string | string[])[]) {
     let v = this.value();
-    let ts = [];
+    let ts: any[] = [];
 
     for (const t of types) {
       if (isNonEmptyString(t)) {
@@ -715,7 +718,9 @@ export class Util {
     let errors = [];
     for (const t of ts2) {
       let fn = 'is' + t.charAt(0).toUpperCase() + t.slice(1);
+      // @ts-ignore
       if (isFunction(this[fn])) {
+        // @ts-ignore
         if (this[fn](v)) {
           return true;
         }

@@ -25,33 +25,29 @@ import {
   pad,
   pick,
   utilObj as t,
-  underscoreCapitalize
-} from '../dist';
+  underscoreCapitalize,
+} from '../src';
 
 describe('util', () => {
   describe('type', () => {
     const obj = {
       a: 'b',
       c: 'd',
-      e: 4
+      e: 4,
     };
 
     it('isString', () => {
       expect(isString('string')).toBe(true);
-      expect(
-        t({ a: 'string' })
-          .property('a')
-          .isString()
-      ).toBe(true);
+      expect(t({ a: 'string' }).property('a').isString()).toBe(true);
       expect(
         t({ a: { b: 'string' } })
           .prop('a.b')
-          .isString()
+          .isString(),
       ).toBe(true);
       expect(
         t({ a: { b: 'string' } })
           .property('a.c')
-          .isString()
+          .isString(),
       ).toBe(false);
       expect(isString(4)).toBe(false);
     });
@@ -186,20 +182,12 @@ describe('util', () => {
       expect(isType(new Date(), 'date')).toBe(true);
     });
     it('isType property', () => {
-      expect(
-        t({ a: 3 })
-          .property('a')
-          .isType('number')
-      ).toBe(true);
-      expect(
-        t({ a: 3 })
-          .property('a')
-          .isType('string')
-      ).toBe(false);
+      expect(t({ a: 3 }).property('a').isType('number')).toBe(true);
+      expect(t({ a: 3 }).property('a').isType('string')).toBe(false);
       expect(
         t({ a: { b: 3 } })
           .property('a.b')
-          .isType('string|number')
+          .isType('string|number'),
       ).toBe(true);
       expect(() => {
         t({ a: { b: 3 } }, { throw: true })
@@ -219,7 +207,7 @@ describe('util', () => {
       expect(
         t({ a: { b: 3 } })
           .property('a.b')
-          .value()
+          .value(),
       ).toBe(3);
     });
     it('value2', () => {
@@ -227,7 +215,7 @@ describe('util', () => {
         t({ a: { b: 3 } })
           .property('a')
           .prop('b')
-          .value()
+          .value(),
       ).toBe(3);
     });
     it('value3', () => {
@@ -236,7 +224,7 @@ describe('util', () => {
           .property('a')
           .reset()
           .prop('a.b')
-          .value()
+          .value(),
       ).toBe(3);
     });
 
@@ -248,7 +236,7 @@ describe('util', () => {
           .property('a')
           .reset()
           .prop('a.b')
-          .value()
+          .value(),
       ).toBe(5);
     });
   });
@@ -257,7 +245,7 @@ describe('util', () => {
     const obj = {
       a: 'b',
       c: 'd',
-      e: 4
+      e: 4,
     };
     it('pick and deepEquals', () => {
       let result1 = deepEquals(pick(obj, 'a', 'e'), { a: 'b', e: 4 });
@@ -287,7 +275,7 @@ describe('util', () => {
       e: 4,
       f: [{ a: '{home}/hello/world' }],
       g: { pattern: 'serial$', flags: 'i' },
-      h: { pattern: '(a|bc)' }
+      h: { pattern: '(a|bc)' },
     };
     const obj2 = {
       a: 'b',
@@ -295,7 +283,7 @@ describe('util', () => {
       e: 4,
       f: [{ a: 'well/hello/world' }],
       g: { pattern: 'serial$', flags: 'i' },
-      h: { pattern: '(a|bc)' }
+      h: { pattern: '(a|bc)' },
     };
     const obj3 = {
       a: 'b',
@@ -303,7 +291,7 @@ describe('util', () => {
       e: 4,
       f: [{ a: 'well/hello/world' }],
       g: /serial$/i,
-      h: /(a|bc)/
+      h: /(a|bc)/,
     };
     const replace = { home: 'well' };
     it('no replace', () => {
@@ -315,11 +303,13 @@ describe('util', () => {
       let result2 = deepCopy(obj, { replace: replace });
       let isEqual2: boolean = deepEquals(obj, result2);
       expect(isEqual2).toBe(false);
+      expect(result2).toEqual(obj2);
       let isEqual3: boolean = deepEquals(obj2, result2);
       expect(isEqual3).toBe(true);
     });
     it('regexp', () => {
       let result3 = deepCopy(obj, { replace: replace, detectRegExp: true });
+      expect(result3).toEqual(obj3);
       let isEqual4: boolean = deepEquals(obj, result3);
       expect(isEqual4).toBe(false);
       let isEqual5: boolean = deepEquals(obj3, result3);
