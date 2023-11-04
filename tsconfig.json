@@ -5,7 +5,9 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "esModuleInterop": true
+    "noEmit": false,
+    "esModuleInterop": true,
+    "strict": true
   },
   "b_compilerOptions": {
     "target": "es2015",

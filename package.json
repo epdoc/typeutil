@@ -1,6 +1,6 @@
 {
   "name": "epdoc-util",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Typescript-aware guard tests and other standalone utilities",
   "private": false,
   "keywords": [
