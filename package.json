@@ -13,14 +13,13 @@
     "email": "jpravetz@epdoc.com"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jpravetz/epdoc-util.git"
   },
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "tsc",
+    "clean": "rm -rf dist docs coverage",
+    "build": "rm -rf dist && tsc",
     "watch": "jest --watch",
     "clear-warning": "watchman watch-del-all > /dev/null",
     "test": "npm run clear-warning; jest --runInBand",
