@@ -1,5 +1,13 @@
 {
   "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true
+  },
+  "b_compilerOptions": {
     "target": "es2015",
     "module": "es2015",
     "declaration": true,
