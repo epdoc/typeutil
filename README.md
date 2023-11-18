@@ -1,9 +1,9 @@
-# epdoc-util
+# @epdoc/typeutil
 
 Typescript utilities, mostly for type checking, with type-guards.
 
 ```ts
-import { isBoolean } from 'epdoc-util';
+import { isBoolean } from '@epdoc/typeutil';
 
 if (isBoolean(value)) {
   doTask();
@@ -11,7 +11,7 @@ if (isBoolean(value)) {
 ```
 
 ```ts
-import { object as test } from 'epdoc-util';
+import { object as test } from '@epdoc/typeutil';
 
 let obj = { a: { b: 3 } };
 test(obj)
