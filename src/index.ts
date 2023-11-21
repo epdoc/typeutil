@@ -12,6 +12,7 @@ const REGEX = {
   html: new RegExp(/[&<>"'\/]/, 'g'),
   instr: new RegExp(/^\[([^\]]+)\](.*)$/),
   typeSplit: new RegExp(/\s*[,\|]{1}\s*/),
+  camelToDash: new RegExp(/([a-z0-9])([A-Z])/, 'g'),
 };
 
 export function isBoolean(val: any): val is boolean {
@@ -440,9 +441,9 @@ export function isClass(obj: any, name: string): boolean {
  * @param str
  */
 export function camelToDash(str: string): string {
-  return str
-    .replace(REGEX.firstUppercase, ([first]) => (first ? first.toLowerCase() : ''))
-    .replace(REGEX.allUppercase, ([letter]) => `-${letter ? letter.toLowerCase() : ''}`);
+  return str.replace(REGEX.camelToDash, '$1-$2').toLowerCase();
+  // .replace(REGEX.firstUppercase, ([first]) => (first ? first.toLowerCase() : ''))
+  // .replace(REGEX.allUppercase, ([letter]) => `-${letter ? letter.toLowerCase() : ''}`);
 }
 
 /**

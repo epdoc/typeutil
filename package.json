@@ -26,6 +26,7 @@
     "coverage": "jest --coverage --runInBand --verbose",
     "prepublishOnly": "tsc",
     "prepare": "npm run build",
+    "publish": "npm publish --access public",
     "format": "prettier --write 'src/**/*.ts'"
   },
   "devDependencies": {

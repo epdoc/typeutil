@@ -1,6 +1,19 @@
 # @epdoc/typeutil
 
-Typescript utilities, mostly for type checking, with type-guards.
+Includes:
+
+ * TypeScript-capable type-checking, type-guard and casting utilities
+   * e.g. `isString()`, `isPosInteger()`, `asInteger()`
+   * A `Util` object to encapslate type checking and reach into an Object's properties
+ * Type declarations
+   * `Integer`, `Dict`
+ * Other common utilities, for example
+   * `delayPromise` is `setTimeout` as a Promise
+   * `camelToDash`, `underscoreCapitalize` string conversion
+   * `deepCopy`, `deepEquals`
+   * `pad` a string
+
+## Usage   
 
 ```ts
 import { isBoolean } from '@epdoc/typeutil';
@@ -10,8 +23,10 @@ if (isBoolean(value)) {
 }
 ```
 
+Using the `Util` class.
+
 ```ts
-import { object as test } from '@epdoc/typeutil';
+import { util as test } from '@epdoc/typeutil';
 
 let obj = { a: { b: 3 } };
 test(obj)
@@ -25,7 +40,7 @@ test(obj)
   .isInteger(); // returns true
 ```
 
-## Build
+## Build and Publish
 
 ```bash
 npm run clean
@@ -33,8 +48,8 @@ npm run build
 npm run test
 ```
 
-## Publish
+# Publish to @epdoc
 
 ```bash
-npm publish
+npm run publish
 ```
