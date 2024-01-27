@@ -269,6 +269,8 @@ export function roundNumber(num: number, dec: number = 3): number {
 export type DeepCopyOpts = {
   replace?: Dict;
   detectRegExp?: boolean;
+  pre?: string;
+  post?: string;
 };
 
 /**
@@ -276,7 +278,8 @@ export type DeepCopyOpts = {
  * replace strings if replace is a dictionary of string replacements. For
  * example, if replace = { home: 'hello' } then any string in `a` that contains
  * '{home}' will be replaced with well (eg. '{home}/world' becomes
- * 'hello/world').
+ * 'hello/world'). The pre and post delimiters can be modified with opts.pre and
+ * opts.post.
  * @param a - The object to be copied
  * @param replace Optional dictionary, of string replacements
  */
@@ -288,8 +291,10 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
   } else if (typeof a === 'string') {
     if (opts && opts.replace) {
       let r = a;
+      const pre = opts.pre ? opts.pre : '{';
+      const post = opts.post ? opts.post : '}';
       Object.keys(opts.replace).forEach((b) => {
-        const m: string = '{' + b + '}';
+        const m: string = pre + b + post;
         if (r.includes(m)) {
           // @ts-ignore
           r = r.replace(m, opts.replace[b]);

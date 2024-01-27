@@ -1,6 +1,6 @@
 {
   "name": "@epdoc/typeutil",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Typescript-aware guard tests and other standalone utilities",
   "private": false,
   "keywords": [
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jpravetz/epdoc-util.git"
+    "url": "git+https://github.com/epdoc/typeutil.git"
   },
   "main": "dist/index.js",
   "scripts": {

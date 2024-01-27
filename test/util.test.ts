@@ -277,6 +277,14 @@ describe('util', () => {
       g: { pattern: 'serial$', flags: 'i' },
       h: { pattern: '(a|bc)' },
     };
+    const obj1 = {
+      a: 'b',
+      c: '<{home}>/hello/world',
+      e: 4,
+      f: [{ a: '<{home}>/hello/world' }],
+      g: { pattern: 'serial$', flags: 'i' },
+      h: { pattern: '(a|bc)' },
+    };
     const obj2 = {
       a: 'b',
       c: 'well/hello/world',
@@ -305,6 +313,14 @@ describe('util', () => {
       expect(isEqual2).toBe(false);
       expect(result2).toEqual(obj2);
       let isEqual3: boolean = deepEquals(obj2, result2);
+      expect(isEqual3).toBe(true);
+    });
+    it('replace change delimiter', () => {
+      let result1 = deepCopy(obj1, { replace: replace, pre: '<{', post: '}>' });
+      let isEqual2: boolean = deepEquals(obj, result1);
+      expect(isEqual2).toBe(false);
+      expect(result1).toEqual(obj2);
+      let isEqual3: boolean = deepEquals(obj2, result1);
       expect(isEqual3).toBe(true);
     });
     it('regexp', () => {
