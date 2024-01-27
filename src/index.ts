@@ -266,6 +266,7 @@ export function roundNumber(num: number, dec: number = 3): number {
   return Math.round(num * factor) / factor;
 }
 
+export type DeepCopyFn = (a: any, opts: DeepCopyOpts) => any;
 export type DeepCopyOpts = {
   replace?: Dict;
   detectRegExp?: boolean;
@@ -283,18 +284,17 @@ export type DeepCopyOpts = {
  * @param a - The object to be copied
  * @param replace Optional dictionary, of string replacements
  */
-export function deepCopy(a: any, opts?: DeepCopyOpts): any {
+export function deepCopy(a: any, options?: DeepCopyOpts): any {
+  let opts: DeepCopyOpts = deepCopySetDefaultOpts(options);
   if (a === undefined || a === null) {
     return a;
   } else if (typeof a === 'number') {
     return a;
   } else if (typeof a === 'string') {
-    if (opts && opts.replace) {
+    if (opts.replace) {
       let r = a;
-      const pre = opts.pre ? opts.pre : '{';
-      const post = opts.post ? opts.post : '}';
       Object.keys(opts.replace).forEach((b) => {
-        const m: string = pre + b + post;
+        const m: string = opts.pre + b + opts.post;
         if (r.includes(m)) {
           // @ts-ignore
           r = r.replace(m, opts.replace[b]);
@@ -327,6 +327,19 @@ export function deepCopy(a: any, opts?: DeepCopyOpts): any {
     }
   }
   return a;
+}
+
+export function deepCopySetDefaultOpts(opts?: DeepCopyOpts): DeepCopyOpts {
+  if (!opts) {
+    opts = {};
+  }
+  if (!opts.pre) {
+    opts.pre = '{';
+  }
+  if (!opts.post) {
+    opts.post = '}';
+  }
+  return opts;
 }
 
 /**
