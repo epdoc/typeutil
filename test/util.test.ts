@@ -287,21 +287,21 @@ describe('util', () => {
     };
     const obj2 = {
       a: 'b',
-      c: 'well/hello/world',
+      c: 'well$$$/hello/world',
       e: 4,
-      f: [{ a: 'well/hello/world' }],
+      f: [{ a: 'well$$$/hello/world' }],
       g: { pattern: 'serial$', flags: 'i' },
       h: { pattern: '(a|bc)' },
     };
     const obj3 = {
       a: 'b',
-      c: 'well/hello/world',
+      c: 'well$$$/hello/world',
       e: 4,
-      f: [{ a: 'well/hello/world' }],
+      f: [{ a: 'well$$$/hello/world' }],
       g: /serial$/i,
       h: /(a|bc)/,
     };
-    const replace = { home: 'well' };
+    const replace = { home: 'well$$$' };
     it('no replace', () => {
       let result1 = deepCopy(obj);
       let isEqual1: boolean = deepEquals(obj, result1);

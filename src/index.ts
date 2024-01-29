@@ -296,8 +296,12 @@ export function deepCopy(a: any, options?: DeepCopyOpts): any {
       Object.keys(opts.replace).forEach((b) => {
         const m: string = opts.pre + b + opts.post;
         if (r.includes(m)) {
-          // @ts-ignore
-          r = r.replace(m, opts.replace[b]);
+          // replacement string have special replacement patterns, so use a function to return the raw string
+          r = r.replace(m, () => {
+            // @ts-ignore
+            return opts.replace[b];
+          });
+          // r = r.replace(m, opts.replace[b]);
         }
       });
       return r;
