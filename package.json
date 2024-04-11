@@ -1,6 +1,6 @@
 {
   "name": "@epdoc/typeutil",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Typescript-aware guard tests and other standalone utilities",
   "private": false,
   "keywords": [

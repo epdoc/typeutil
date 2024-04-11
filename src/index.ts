@@ -390,12 +390,23 @@ export function deepEquals(a: any, b: any): boolean {
 }
 
 export type CompareResult = -1 | 0 | 1;
-export function compareDictValue(a: Dict, b: Dict, key: string): CompareResult {
-  if (a[key] < b[key]) {
-    return -1;
-  }
-  if (a[key] > b[key]) {
-    return 1;
+
+/**
+ * Compare two Dict objects using the property or properties specified in keys.
+ * @param a
+ * @param b
+ * @param keys
+ * @returns
+ */
+export function compareDictValue(a: Dict, b: Dict, ...keys: string[]): CompareResult {
+  for (let kdx = 0; kdx < keys.length; ++kdx) {
+    const key = keys[kdx];
+    if (a[key] < b[key]) {
+      return -1;
+    }
+    if (a[key] > b[key]) {
+      return 1;
+    }
   }
   return 0;
 }

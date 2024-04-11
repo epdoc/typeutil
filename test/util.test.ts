@@ -2,6 +2,7 @@ import {
   asFloat,
   asInt,
   camelToDash,
+  compareDictValue,
   deepCopy,
   deepEquals,
   hasValue,
@@ -241,6 +242,33 @@ describe('util', () => {
     });
   });
 
+  describe('compare', () => {
+    const a = { a: 'boo', c: 'd', e: 4 };
+    const b = { a: 'boo', c: 'd', e: 4 };
+    const c = { a: 'ba', c: 'd', e: 4 };
+    const d = { a: 'boo', c: 'e', e: 4 };
+    it('compare equals', () => {
+      expect(compareDictValue(a, b, 'a')).toBe(0);
+      expect(compareDictValue(a, b, 'c')).toBe(0);
+      expect(compareDictValue(a, b, 'e')).toBe(0);
+      expect(compareDictValue(a, b, 'f')).toBe(0);
+      expect(compareDictValue(a, b, 'a', 'c', 'e')).toBe(0);
+    });
+    it('compare not equal a', () => {
+      expect(compareDictValue(a, c, 'a')).toBe(1);
+      expect(compareDictValue(a, c, 'c')).toBe(0);
+      expect(compareDictValue(a, c, 'e')).toBe(0);
+      expect(compareDictValue(a, c, 'f')).toBe(0);
+      expect(compareDictValue(a, c, 'a', 'c', 'e')).toBe(1);
+    });
+    it('compare not equal b', () => {
+      expect(compareDictValue(a, d, 'a')).toBe(0);
+      expect(compareDictValue(a, d, 'c')).toBe(-1);
+      expect(compareDictValue(a, d, 'e')).toBe(0);
+      expect(compareDictValue(a, d, 'f')).toBe(0);
+      expect(compareDictValue(a, d, 'a', 'c', 'e')).toBe(-1);
+    });
+  });
   describe('deep', () => {
     const obj = {
       a: 'b',
