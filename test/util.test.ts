@@ -13,15 +13,18 @@ import {
   isError,
   isFunction,
   isInteger,
+  isIntegerInRange,
   isNonEmptyString,
   isNull,
   isNumber,
+  isNumberInRange,
   isObject,
   isPosNumber,
   isRegExp,
   isString,
   isType,
   isValidDate,
+  isWholeNumber,
   omit,
   pad,
   pick,
@@ -92,6 +95,41 @@ describe('util', () => {
       expect(isInteger(0.2)).toBe(false);
       expect(isInteger(0)).toBe(true);
       expect(isInteger(-1)).toBe(true);
+    });
+
+    it('isWholeNumber', () => {
+      expect(isWholeNumber(4)).toBe(true);
+      expect(isWholeNumber(NaN)).toBe(false);
+      expect(isWholeNumber(0.2)).toBe(false);
+      expect(isWholeNumber(0)).toBe(true);
+      expect(isWholeNumber(-1)).toBe(false);
+    });
+
+    it('isIntegerInRange', () => {
+      expect(isIntegerInRange(4, 0, 4)).toBe(true);
+      expect(isIntegerInRange(NaN, -99, 99)).toBe(false);
+      expect(isIntegerInRange(0.2, 0, 1)).toBe(false);
+      expect(isIntegerInRange(0, 0, 1)).toBe(true);
+      expect(isIntegerInRange(-1, 1, 5)).toBe(false);
+      expect(isIntegerInRange(0, 1, 5)).toBe(false);
+      expect(isIntegerInRange(1, 1, 5)).toBe(true);
+      expect(isIntegerInRange(3, 1, 5)).toBe(true);
+      expect(isIntegerInRange(5, 1, 5)).toBe(true);
+      expect(isIntegerInRange(6, 1, 5)).toBe(false);
+    });
+
+    it('isNumberInRange', () => {
+      expect(isNumberInRange(4, 0, 4)).toBe(true);
+      expect(isNumberInRange(NaN, -99, 99)).toBe(false);
+      expect(isNumberInRange(0.2, 0, 1)).toBe(true);
+      expect(isNumberInRange(0, 0, 1)).toBe(true);
+      expect(isNumberInRange(-1, 1, 5)).toBe(false);
+      expect(isNumberInRange(0.999, 1, 5)).toBe(false);
+      expect(isNumberInRange(1, 1.1, 5)).toBe(false);
+      expect(isNumberInRange(1.1, 1, 5)).toBe(true);
+      expect(isNumberInRange(3, 1, 5)).toBe(true);
+      expect(isNumberInRange(5, 1, 5)).toBe(true);
+      expect(isNumberInRange(6, 1, 5)).toBe(false);
     });
 
     it('isFunction', () => {

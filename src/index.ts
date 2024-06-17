@@ -41,6 +41,30 @@ export function isPosInteger(val: any): val is Integer {
 }
 
 /**
+ * Is 0, 1, 2, 3, ...
+ * @param val
+ */
+export function isWholeNumber(val: any): val is Integer {
+  return isInteger(val) && val >= 0;
+}
+
+/**
+ * Is an Integer in the range specified
+ * @param val
+ */
+export function isIntegerInRange(val: any, min: number, max: number): val is Integer {
+  return isInteger(val) && val >= min && val <= max;
+}
+
+/**
+ * Is a number in the range specified
+ * @param val
+ */
+export function isNumberInRange(val: any, min: number, max: number): val is number {
+  return isNumber(val) && val >= min && val <= max;
+}
+
+/**
  * Is > 0
  * @param val
  */
@@ -671,6 +695,14 @@ export class Util {
 
   isInteger() {
     return isInteger(this.value());
+  }
+
+  isPosInteger() {
+    return isPosInteger(this.value());
+  }
+
+  isWholeNumber() {
+    return isWholeNumber(this.value());
   }
 
   isNonEmptyString() {
