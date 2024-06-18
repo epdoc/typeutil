@@ -175,12 +175,12 @@ export function omit(obj: Dict, ...args: any[]) {
 // }
 
 export function isTrue(val: any): boolean {
-  if (typeof val === 'number') {
+  if (typeof val === 'boolean') {
+    return val;
+  } else if (typeof val === 'number') {
     return val > 0 ? true : false;
   } else if (typeof val === 'string') {
     return val.length && !REGEX.isFalse.test(val) ? true : false;
-  } else if (typeof val === 'boolean') {
-    return val;
   }
   return false;
 }
