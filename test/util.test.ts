@@ -418,6 +418,7 @@ describe('util', () => {
       expect(asInt(32.5)).toEqual(33);
       expect(asInt(9.49)).toEqual(9);
       expect(asInt('9.49')).toEqual(9);
+      expect(asInt('3')).toEqual(3);
       expect(asInt('11.5')).toEqual(12);
       expect(asInt('aba')).toEqual(0);
       expect(asInt([])).toEqual(0);
