@@ -12,7 +12,8 @@ const REGEX = {
   html: new RegExp(/[&<>"'\/]/, 'g'),
   instr: new RegExp(/^\[([^\]]+)\](.*)$/),
   typeSplit: new RegExp(/\s*[,\|]{1}\s*/),
-  camelToDash: new RegExp(/([a-z0-9])([A-Z])/, 'g'),
+  camel2dash: new RegExp(/([a-z0-9])([A-Z])/, 'g'),
+  dash2camel: new RegExp(/-([a-z])/, 'g'),
 };
 
 export function isBoolean(val: any): val is boolean {
@@ -497,10 +498,29 @@ export function isClass(obj: any, name: string): boolean {
  * Convert string of form 'myClass' to 'my-class'
  * @param str
  */
-export function camelToDash(str: string): string {
-  return str.replace(REGEX.camelToDash, '$1-$2').toLowerCase();
+export function camel2dash(str: string): string {
+  return str.replace(REGEX.camel2dash, '$1-$2').toLowerCase();
   // .replace(REGEX.firstUppercase, ([first]) => (first ? first.toLowerCase() : ''))
   // .replace(REGEX.allUppercase, ([letter]) => `-${letter ? letter.toLowerCase() : ''}`);
+}
+
+/**
+ * Convert string of form 'myClass' to 'my-class'
+ * @param str
+ * @deprecated
+ */
+export function camelToDash(str: string): string {
+  return str.replace(REGEX.camel2dash, '$1-$2').toLowerCase();
+}
+
+/**
+ * Convert string of form 'my-class' to 'myClass'
+ * @param str
+ */
+export function dash2camel(str: string): string {
+  return str.replace(REGEX.dash2camel, function (k) {
+    return k[1].toUpperCase();
+  });
 }
 
 /**

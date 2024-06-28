@@ -1,8 +1,9 @@
 import {
   asFloat,
   asInt,
-  camelToDash,
+  camel2dash,
   compareDictValue,
+  dash2camel,
   deepCopy,
   deepEquals,
   hasValue,
@@ -400,9 +401,13 @@ describe('util', () => {
   });
 
   describe('translate', () => {
-    it('camelToDash', () => {
-      expect(camelToDash('myStringHere')).toEqual('my-string-here');
-      expect(camelToDash('MyStringHere')).toEqual('my-string-here');
+    it('camel2dash', () => {
+      expect(camel2dash('myStringHere')).toEqual('my-string-here');
+      expect(camel2dash('MyStringHere')).toEqual('my-string-here');
+    });
+    it('dash2camel', () => {
+      expect(dash2camel('my-string-here')).toEqual('myStringHere');
+      expect(dash2camel('my-string')).toEqual('myString');
     });
     it('underscoreCapitalize', () => {
       expect(underscoreCapitalize('my_string_here')).toEqual('My String Here');
