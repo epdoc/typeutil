@@ -12,6 +12,7 @@ import {
   isDate,
   isDefined,
   isError,
+  isFalse,
   isFunction,
   isInteger,
   isIntegerInRange,
@@ -23,6 +24,7 @@ import {
   isPosNumber,
   isRegExp,
   isString,
+  isTrue,
   isType,
   isValidDate,
   isWholeNumber,
@@ -179,6 +181,43 @@ describe('util', () => {
       expect(isRegExp(Date.now())).toBe(false);
       expect(isObject(() => {})).toBe(false);
       expect(isObject(undefined)).toBe(false);
+    });
+
+    it('isTrue false', () => {
+      expect(isTrue({})).toBe(false);
+      expect(isTrue(0)).toBe(false);
+      expect(isTrue('no')).toBe(false);
+      expect(isTrue('false')).toBe(false);
+      expect(isTrue('orange')).toBe(false);
+      expect(isTrue(-1)).toBe(false);
+      expect(isTrue(false)).toBe(false);
+    });
+
+    it('isTrue true', () => {
+      expect(isTrue(1)).toBe(true);
+      expect(isTrue(true)).toBe(true);
+      expect(isTrue('YES')).toBe(true);
+      expect(isTrue('TRUE')).toBe(true);
+      expect(isTrue(2)).toBe(true);
+    });
+
+    it('isFalse false', () => {
+      expect(isFalse({})).toBe(false);
+      expect(isFalse(1)).toBe(false);
+      expect(isFalse('yes')).toBe(false);
+      expect(isFalse('true')).toBe(false);
+      expect(isFalse('orange')).toBe(false);
+      expect(isFalse(2)).toBe(false);
+      expect(isFalse(-1)).toBe(false);
+      expect(isFalse(true)).toBe(false);
+    });
+
+    it('isFalse true', () => {
+      expect(isFalse(false)).toBe(true);
+      expect(isFalse('no')).toBe(true);
+      expect(isFalse('FALSE')).toBe(true);
+      expect(isFalse('false')).toBe(true);
+      expect(isFalse(0)).toBe(true);
     });
 
     it('isDate', () => {

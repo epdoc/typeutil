@@ -1,8 +1,8 @@
 export type Dict = { [key: string]: any };
 
 const REGEX = {
-  isTrue: new RegExp(/^true$/, 'i'),
-  isFalse: new RegExp(/^false$/, 'i'),
+  isTrue: new RegExp(/^(true|yes)$/, 'i'),
+  isFalse: new RegExp(/^(false|no)$/, 'i'),
   customElement: new RegExp(/CustomElement$/),
   firstUppercase: new RegExp(/(^[A-Z])/),
   allUppercase: new RegExp(/([A-Z])/, 'g'),
@@ -175,24 +175,34 @@ export function omit(obj: Dict, ...args: any[]) {
 //   return Util.VAL_MAP[type];
 // }
 
+/**
+ * Test if val is definitively true.
+ * @param val
+ * @returns true if val is true
+ */
 export function isTrue(val: any): boolean {
   if (typeof val === 'boolean') {
     return val;
   } else if (typeof val === 'number') {
     return val > 0 ? true : false;
   } else if (typeof val === 'string') {
-    return val.length && !REGEX.isFalse.test(val) ? true : false;
+    return val.length && REGEX.isTrue.test(val) ? true : false;
   }
   return false;
 }
 
+/**
+ * Test if val is definitively false.
+ * @param val
+ * @returns true if val is false
+ */
 export function isFalse(val: any): boolean {
-  if (typeof val === 'number') {
+  if (typeof val === 'boolean') {
+    return val === false ? true : false;
+  } else if (typeof val === 'number') {
     return val === 0 ? true : false;
   } else if (typeof val === 'string') {
-    return val.length && !REGEX.isTrue.test(val) ? true : false;
-  } else if (typeof val === 'boolean') {
-    return val;
+    return val.length && REGEX.isFalse.test(val) ? true : false;
   }
   return false;
 }
