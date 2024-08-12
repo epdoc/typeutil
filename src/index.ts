@@ -561,34 +561,38 @@ export function underscoreCapitalize(str: string): string {
  * @param types
  */
 export function isType(val: any, ...types: (string | string[])[]) {
-  let util = new Util(val);
+  let util = new DeepObject(val);
   return util.isType(...types);
 }
 
-export function util() {
-  return new Util();
-}
+// export function util() {
+//   return new UtilObj();
+// }
 
-export interface IUtilSource {
+export interface IDeepObjectSource {
   toString(): string;
 }
 
-export type UtilOpts = {
+export type DeepObjectOpts = {
   throw?: boolean;
-  src?: string | IUtilSource;
+  src?: string | IDeepObjectSource;
 };
 
-export function utilObj(val: any, opts?: UtilOpts) {
-  return new Util(val, opts);
+export function deepObj(val: any, opts?: DeepObjectOpts) {
+  return new DeepObject(val, opts);
 }
 
-export class Util {
-  private _path?: string[] = [];
-  private _throw: boolean = false;
-  private _val?: any;
-  private _src?: IUtilSource;
+export function writableDeepObj(val: any, opts?: DeepObjectOpts) {
+  return new WritableDeepObject(val, opts);
+}
 
-  constructor(val?: any, opts: UtilOpts = {}) {
+export class DeepObject {
+  protected _path?: string[] = [];
+  protected _throw: boolean = false;
+  protected _val?: any;
+  protected _src?: IDeepObjectSource;
+
+  constructor(val?: any, opts: DeepObjectOpts = {}) {
     this._val = val;
     this._throw = opts.throw === true ? true : false;
     this._src = opts.src;
@@ -666,36 +670,8 @@ export class Util {
     return a;
   }
 
-  setVal(value: any): this {
-    this.setValue(this._val, value);
-    return this;
-  }
-
-  setValue(object: Dict, value: any): this {
-    if (this._path && this._path.length && isDict(object)) {
-      let obj = object;
-      const n = this._path.length;
-      for (let i = 0; i < n; ++i) {
-        const k = this._path[i];
-        if (obj && k) {
-          if (i >= n - 1) {
-            if (isDict(obj)) {
-              obj[k] = value;
-            }
-          } else {
-            if (!(k in obj)) {
-              obj[k] = {};
-            }
-            obj = obj[k];
-          }
-        }
-      }
-    }
-    return this;
-  }
-
-  asBoolean() {
-    return isTrue(this.value());
+  asBoolean(defval = false) {
+    return asBoolean(this.value());
   }
 
   asInt() {
@@ -835,5 +811,35 @@ export class Util {
       throw new Error(`Invalid type [${errors.join(',')}]`);
     }
     return false;
+  }
+}
+
+export class WritableDeepObject extends DeepObject {
+  setVal(value: any): this {
+    this.setValue(this._val, value);
+    return this;
+  }
+
+  setValue(object: Dict, value: any): this {
+    if (this._path && this._path.length && isDict(object)) {
+      let obj = object;
+      const n = this._path.length;
+      for (let i = 0; i < n; ++i) {
+        const k = this._path[i];
+        if (obj && k) {
+          if (i >= n - 1) {
+            if (isDict(obj)) {
+              obj[k] = value;
+            }
+          } else {
+            if (!(k in obj)) {
+              obj[k] = {};
+            }
+            obj = obj[k];
+          }
+        }
+      }
+    }
+    return this;
   }
 }

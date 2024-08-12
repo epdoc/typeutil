@@ -32,8 +32,9 @@ import {
   omit,
   pad,
   pick,
-  utilObj as t,
+  deepObj as t,
   underscoreCapitalize,
+  writableDeepObj as w,
 } from '../src';
 
 describe('type', () => {
@@ -343,7 +344,7 @@ describe('type', () => {
 
     it('setVal', () => {
       expect(
-        t({ a: { b: 3 } })
+        w({ a: { b: 3 } })
           .prop('a.b')
           .setVal(5)
           .property('a')
