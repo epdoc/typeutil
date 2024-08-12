@@ -4,6 +4,7 @@ import {
   asInt,
   asRegExp,
   hasValue,
+  Integer,
   isArray,
   isBoolean,
   isDate,
@@ -142,23 +143,23 @@ export class DictUtil {
     return a;
   }
 
-  asBoolean(defval = false) {
+  asBoolean(defval = false): boolean {
     return asBoolean(this._val);
   }
 
-  asInt() {
-    return asInt(this._val);
+  asInt(defVal = 0): Integer {
+    return asInt(this._val, defVal);
   }
 
-  asFloat() {
-    return asFloat(this._val);
+  asFloat(defVal: number = 0, commaAsDecimal = false): number {
+    return asFloat(this._val, { def: defVal, commaAsDecimal: commaAsDecimal });
   }
 
-  asString() {
+  asString(): string {
     return String(this._val);
   }
 
-  asRegExp() {
+  asRegExp(): RegExp | undefined {
     return asRegExp(this._val);
   }
 

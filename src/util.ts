@@ -256,7 +256,7 @@ export function asFloat(val: any, opts?: AsFloatOpts): number {
  * Always returns a valid integer. Returns 0 if the val cannot be parsed or rounded to an integer.
  * @param val
  */
-export function asInt(val: any): number {
+export function asInt(val: any, defVal = 0): number {
   // for speed do this test first
   if (isNumber(val)) {
     return Number.isInteger(val) ? val : Math.round(val);
@@ -266,7 +266,7 @@ export function asInt(val: any): number {
       return Number.isInteger(v) ? v : Math.round(v);
     }
   }
-  return 0;
+  return defVal;
 }
 
 /**
