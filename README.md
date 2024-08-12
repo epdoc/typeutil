@@ -13,7 +13,7 @@ Includes:
    * `deepCopy`, `deepEquals`
    * `pad` a string
 
-## Usage   
+## Utility Functions   
 
 ```ts
 import { isBoolean } from '@epdoc/typeutil';
@@ -23,29 +23,26 @@ if (isBoolean(value)) {
 }
 ```
 
-Using the `Util` class.
+## DictUtil
 
 ```ts
-import { util as test } from '@epdoc/typeutil';
+import { dictUtil as test } from '@epdoc/typeutil';
 
 let obj = { a: { b: 3 } };
 test(obj)
   .property('a.b')
   .value(); // returns 3
 
-u.path('a.c').setValue({}, 4); // results in { a: { c: 4 }}
-
-test(obj)
-  .property('a.b')
-  .isInteger(); // returns true
+const objUtil:DictUtil = dictUtil(obj);
+const abVal:DictUtil = objUtil.property('a.b');
+console.log( `Object value=${abVal.value()} and isInteger=${abVal.isInteger()}`);
 ```
 
 ## Build and Publish
 
 ```bash
-npm run clean
 npm run build
-npm run test
+npm test
 ```
 
 # Publish to @epdoc
