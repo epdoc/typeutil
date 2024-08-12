@@ -1,8 +1,8 @@
 export type Dict = { [key: string]: any };
 
 const REGEX = {
-  isTrue: new RegExp(/^(true|yes)$/, 'i'),
-  isFalse: new RegExp(/^(false|no)$/, 'i'),
+  isTrue: new RegExp(/^(true|yes|on)$/, 'i'),
+  isFalse: new RegExp(/^(false|no|off)$/, 'i'),
   customElement: new RegExp(/CustomElement$/),
   firstUppercase: new RegExp(/(^[A-Z])/),
   allUppercase: new RegExp(/([A-Z])/, 'g'),
@@ -205,6 +205,13 @@ export function isFalse(val: any): boolean {
     return val.length && REGEX.isFalse.test(val) ? true : false;
   }
   return false;
+}
+
+export function asBoolean(val: any, defval = false): boolean {
+  if (defval) {
+    return isFalse(val) ? false : defval;
+  }
+  return isTrue(val) ? true : defval;
 }
 
 export type AsFloatOpts = {

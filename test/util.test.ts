@@ -1,4 +1,5 @@
 import {
+  asBoolean,
   asFloat,
   asInt,
   camel2dash,
@@ -35,50 +36,8 @@ import {
   underscoreCapitalize,
 } from '../src';
 
-describe('util', () => {
-  describe('type', () => {
-    const obj = {
-      a: 'b',
-      c: 'd',
-      e: 4,
-    };
-
-    it('isString', () => {
-      expect(isString('string')).toBe(true);
-      expect(t({ a: 'string' }).property('a').isString()).toBe(true);
-      expect(
-        t({ a: { b: 'string' } })
-          .prop('a.b')
-          .isString(),
-      ).toBe(true);
-      expect(
-        t({ a: { b: 'string' } })
-          .property('a.c')
-          .isString(),
-      ).toBe(false);
-      expect(isString(4)).toBe(false);
-    });
-
-    it('isNonEmptyString', () => {
-      let s = 'my string';
-      expect(isNonEmptyString(s)).toBe(true);
-      expect(s).toEqual('my string');
-      expect(isNonEmptyString('')).toBe(false);
-      expect(isNonEmptyString(null)).toBe(false);
-      expect(isNonEmptyString(4)).toBe(false);
-    });
-
-    it('isArray', () => {
-      expect(isArray(['string'])).toBe(true);
-      expect(isArray(4)).toBe(false);
-      expect(isArray({ a: 'string' })).toBe(false);
-    });
-
-    it('isBoolean', () => {
-      expect(isBoolean(false)).toBe(true);
-      expect(isBoolean(undefined)).toBe(false);
-    });
-
+describe('type', () => {
+  describe('number', () => {
     it('isNumber', () => {
       expect(isNumber(4)).toBe(true);
       expect(isNumber(NaN)).toBe(false);
@@ -134,6 +93,137 @@ describe('util', () => {
       expect(isNumberInRange(5, 1, 5)).toBe(true);
       expect(isNumberInRange(6, 1, 5)).toBe(false);
     });
+  });
+
+  describe('Booleans', () => {
+    it('isBoolean', () => {
+      expect(isBoolean(false)).toBe(true);
+      expect(isBoolean(undefined)).toBe(false);
+    });
+
+    it('isTrue false', () => {
+      expect(isTrue({})).toBe(false);
+      expect(isTrue(0)).toBe(false);
+      expect(isTrue('no')).toBe(false);
+      expect(isTrue('false')).toBe(false);
+      expect(isTrue('orange')).toBe(false);
+      expect(isTrue(-1)).toBe(false);
+      expect(isTrue(false)).toBe(false);
+    });
+
+    it('isTrue true', () => {
+      expect(isTrue(1)).toBe(true);
+      expect(isTrue(true)).toBe(true);
+      expect(isTrue('ON')).toBe(true);
+      expect(isTrue('YES')).toBe(true);
+      expect(isTrue('TRUE')).toBe(true);
+      expect(isTrue(2)).toBe(true);
+    });
+
+    it('isFalse false', () => {
+      expect(isFalse({})).toBe(false);
+      expect(isFalse(1)).toBe(false);
+      expect(isFalse('yes')).toBe(false);
+      expect(isFalse('true')).toBe(false);
+      expect(isFalse('orange')).toBe(false);
+      expect(isFalse(2)).toBe(false);
+      expect(isFalse(-1)).toBe(false);
+      expect(isFalse(true)).toBe(false);
+    });
+
+    it('isFalse true', () => {
+      expect(isFalse(false)).toBe(true);
+      expect(isFalse('no')).toBe(true);
+      expect(isFalse('off')).toBe(true);
+      expect(isFalse('FALSE')).toBe(true);
+      expect(isFalse('false')).toBe(true);
+      expect(isFalse(0)).toBe(true);
+    });
+
+    it('asBoolean false', () => {
+      expect(asBoolean(false)).toBe(false);
+      expect(asBoolean('no')).toBe(false);
+      expect(asBoolean('off')).toBe(false);
+      expect(asBoolean('FALSE')).toBe(false);
+      expect(asBoolean('false')).toBe(false);
+      expect(asBoolean(0)).toBe(false);
+    });
+    it('asBoolean true', () => {
+      expect(asBoolean(true)).toBe(true);
+      expect(asBoolean('yes')).toBe(true);
+      expect(asBoolean('ON')).toBe(true);
+      expect(asBoolean('TRUE')).toBe(true);
+      expect(asBoolean('true')).toBe(true);
+      expect(asBoolean(1)).toBe(true);
+    });
+    it('asBoolean default true', () => {
+      expect(asBoolean({}, false)).toBe(false);
+      expect(asBoolean({}, true)).toBe(true);
+      expect(asBoolean([], false)).toBe(false);
+      expect(asBoolean([], true)).toBe(true);
+      expect(asBoolean('orange', false)).toBe(false);
+      expect(asBoolean('orange', true)).toBe(true);
+    });
+  });
+
+  describe('Date', () => {
+    it('isDate', () => {
+      expect(isDate(/^.*$/)).toBe(false);
+      expect(isDate({})).toBe(false);
+      expect(isDate(false)).toBe(false);
+      expect(isDate(233433)).toBe(false);
+      expect(isDate(new Date())).toBe(true);
+      expect(isDate(() => {})).toBe(false);
+    });
+
+    it('isValidDate', () => {
+      expect(isValidDate(/^.*$/)).toBe(false);
+      expect(isValidDate({})).toBe(false);
+      expect(isValidDate(false)).toBe(false);
+      expect(isValidDate(233433)).toBe(false);
+      expect(isValidDate(new Date())).toBe(true);
+      expect(isValidDate(new Date('//'))).toBe(false);
+      expect(isValidDate(() => {})).toBe(false);
+    });
+  });
+
+  describe('misc', () => {
+    const obj = {
+      a: 'b',
+      c: 'd',
+      e: 4,
+    };
+
+    it('isString', () => {
+      expect(isString('string')).toBe(true);
+      expect(t({ a: 'string' }).property('a').isString()).toBe(true);
+      expect(
+        t({ a: { b: 'string' } })
+          .prop('a.b')
+          .isString(),
+      ).toBe(true);
+      expect(
+        t({ a: { b: 'string' } })
+          .property('a.c')
+          .isString(),
+      ).toBe(false);
+      expect(isString(4)).toBe(false);
+    });
+
+    it('isNonEmptyString', () => {
+      let s = 'my string';
+      expect(isNonEmptyString(s)).toBe(true);
+      expect(s).toEqual('my string');
+      expect(isNonEmptyString('')).toBe(false);
+      expect(isNonEmptyString(null)).toBe(false);
+      expect(isNonEmptyString(4)).toBe(false);
+    });
+
+    it('isArray', () => {
+      expect(isArray(['string'])).toBe(true);
+      expect(isArray(4)).toBe(false);
+      expect(isArray({ a: 'string' })).toBe(false);
+    });
 
     it('isFunction', () => {
       expect(isFunction({})).toBe(false);
@@ -181,62 +271,6 @@ describe('util', () => {
       expect(isRegExp(Date.now())).toBe(false);
       expect(isObject(() => {})).toBe(false);
       expect(isObject(undefined)).toBe(false);
-    });
-
-    it('isTrue false', () => {
-      expect(isTrue({})).toBe(false);
-      expect(isTrue(0)).toBe(false);
-      expect(isTrue('no')).toBe(false);
-      expect(isTrue('false')).toBe(false);
-      expect(isTrue('orange')).toBe(false);
-      expect(isTrue(-1)).toBe(false);
-      expect(isTrue(false)).toBe(false);
-    });
-
-    it('isTrue true', () => {
-      expect(isTrue(1)).toBe(true);
-      expect(isTrue(true)).toBe(true);
-      expect(isTrue('YES')).toBe(true);
-      expect(isTrue('TRUE')).toBe(true);
-      expect(isTrue(2)).toBe(true);
-    });
-
-    it('isFalse false', () => {
-      expect(isFalse({})).toBe(false);
-      expect(isFalse(1)).toBe(false);
-      expect(isFalse('yes')).toBe(false);
-      expect(isFalse('true')).toBe(false);
-      expect(isFalse('orange')).toBe(false);
-      expect(isFalse(2)).toBe(false);
-      expect(isFalse(-1)).toBe(false);
-      expect(isFalse(true)).toBe(false);
-    });
-
-    it('isFalse true', () => {
-      expect(isFalse(false)).toBe(true);
-      expect(isFalse('no')).toBe(true);
-      expect(isFalse('FALSE')).toBe(true);
-      expect(isFalse('false')).toBe(true);
-      expect(isFalse(0)).toBe(true);
-    });
-
-    it('isDate', () => {
-      expect(isDate(/^.*$/)).toBe(false);
-      expect(isDate({})).toBe(false);
-      expect(isDate(false)).toBe(false);
-      expect(isDate(233433)).toBe(false);
-      expect(isDate(new Date())).toBe(true);
-      expect(isDate(() => {})).toBe(false);
-    });
-
-    it('isValidDate', () => {
-      expect(isValidDate(/^.*$/)).toBe(false);
-      expect(isValidDate({})).toBe(false);
-      expect(isValidDate(false)).toBe(false);
-      expect(isValidDate(233433)).toBe(false);
-      expect(isValidDate(new Date())).toBe(true);
-      expect(isValidDate(new Date('//'))).toBe(false);
-      expect(isValidDate(() => {})).toBe(false);
     });
 
     it('isError', () => {
