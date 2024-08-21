@@ -100,10 +100,6 @@ export function isRegExp(val: any): val is RegExp {
   return val instanceof RegExp;
 }
 
-export function isRegExpDef(val: any): val is RegExp {
-  return isDict(val) && isNonEmptyString(val.pattern);
-}
-
 export function isNull(val: any): val is null {
   return val === null ? true : false;
 }
@@ -116,6 +112,15 @@ export function isDict(val: any): val is Dict {
     return false;
   }
   return true;
+}
+
+export type RegExpDef = {
+  pattern: string;
+  flags?: string;
+};
+
+export function isRegExpDef(val: any): val is RegExp {
+  return isDict(val) && isNonEmptyString(val.pattern);
 }
 
 /**

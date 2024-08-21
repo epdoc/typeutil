@@ -24,6 +24,7 @@ import {
   isObject,
   isPosNumber,
   isRegExp,
+  isRegExpDef,
   isTrue,
   isValidDate,
   isWholeNumber,
@@ -242,6 +243,14 @@ describe('util', () => {
       expect(isRegExp(false)).toBe(false);
       expect(isRegExp(Date.now())).toBe(false);
       expect(isRegExp(() => {})).toBe(false);
+    });
+
+    it('isRegExpDef', () => {
+      expect(isRegExpDef(/^.*$/)).toBe(false);
+      expect(isRegExpDef({})).toBe(false);
+      expect(isRegExpDef({ pattern: 'stuff' })).toBe(true);
+      expect(isRegExpDef({ pattern: 'stuff', flags: 'i' })).toBe(true);
+      expect(isRegExpDef({ flags: 'stuff' })).toBe(false);
     });
 
     it('isObject', () => {
